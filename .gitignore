@@ -82,3 +82,6 @@ Assets/03.12.2025 updated staircase obj/
 # Old Git backup
 .git-backup/
 
+# Burst debug information
+*_BurstDebugInformation_DoNotShip/
+
