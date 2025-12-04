@@ -36,17 +36,20 @@ namespace Player
 			StartCoroutine(PositionAfterXRInit());
 		}
 
-		private System.Collections.IEnumerator PositionAfterXRInit()
+	private System.Collections.IEnumerator PositionAfterXRInit()
+	{
+		// Wait for XR to initialize (increased from 3 to 15 frames for more reliable tracking)
+		for (int i = 0; i < 15; i++)
 		{
-			// Wait for XR to initialize (multiple frames)
-			for (int i = 0; i < 3; i++)
-			{
-				yield return null;
-			}
+			yield return null;
+		}
+		
+		// Additional wait for tracking to stabilize
+		yield return new WaitForSeconds(0.2f);
 
-			// Use MoveCameraToWorldLocation which properly handles floor offset
-			// But we need to adjust the target Y to account for the camera's height above the origin
-			Vector3 targetCameraPos = _spawnTransform.position;
+		// Use MoveCameraToWorldLocation which properly handles floor offset
+		// But we need to adjust the target Y to account for the camera's height above the origin
+		Vector3 targetCameraPos = _spawnTransform.position;
 			
 			// Get the camera's current local Y offset from origin
 			Transform cameraTransform = _xrOrigin.Camera.transform;
@@ -55,12 +58,14 @@ namespace Player
 				cameraTransform = _xrOrigin.CameraFloorOffsetObject.transform;
 			}
 			
-			Vector3 cameraLocalPos = _xrOrigin.transform.InverseTransformPoint(cameraTransform.position);
-			float cameraLocalY = cameraLocalPos.y;
-			
-			// Adjust target position: if camera is 1.6m above origin, we need to move origin down by that amount
-			// so camera ends up at spawn Y
-			targetCameraPos.y -= cameraLocalY;
+		Vector3 cameraLocalPos = _xrOrigin.transform.InverseTransformPoint(cameraTransform.position);
+		float cameraLocalY = cameraLocalPos.y;
+		
+		Debug.Log($"[PlayerSpawnPoint] Camera local Y offset: {cameraLocalY:F3}m, Target spawn: {_spawnTransform.position.y:F3}m");
+		
+		// Adjust target position: if camera is 1.6m above origin, we need to move origin down by that amount
+		// so camera ends up at spawn Y
+		targetCameraPos.y -= cameraLocalY;
 			
 			// Move the camera to the adjusted position
 			_xrOrigin.MoveCameraToWorldLocation(targetCameraPos);
@@ -69,15 +74,22 @@ namespace Player
 			// Wait and verify
 			yield return null;
 			
-			Vector3 finalCameraPos = cameraTransform.position;
-			float error = Mathf.Abs(_spawnTransform.position.y - finalCameraPos.y);
-			
-			if (error > 0.05f)
-			{
-				// Fine-tune: directly adjust origin position
-				float correction = _spawnTransform.position.y - finalCameraPos.y;
-				_xrOrigin.transform.position += Vector3.up * correction;
-			}
+		Vector3 finalCameraPos = cameraTransform.position;
+		float error = Mathf.Abs(_spawnTransform.position.y - finalCameraPos.y);
+		
+		Debug.Log($"[PlayerSpawnPoint] Final camera Y: {finalCameraPos.y:F3}m, Error: {error:F3}m");
+		
+		if (error > 0.05f)
+		{
+			// Fine-tune: directly adjust origin position
+			float correction = _spawnTransform.position.y - finalCameraPos.y;
+			_xrOrigin.transform.position += Vector3.up * correction;
+			Debug.Log($"[PlayerSpawnPoint] Applied correction: {correction:F3}m");
+		}
+		else
+		{
+			Debug.Log("[PlayerSpawnPoint] Spawn height accurate - no correction needed!");
+		}
 		}
 	}
 }
