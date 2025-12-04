@@ -3358,7 +3358,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Left Trigger = Delete Points\nX  = Go Up \nY = Go Down\n"
+  m_text: "Left Stick = Move\nLeft Trigger = Delete Points\nX  = Go Up \nY = Go Down\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6767,8 +6767,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Right Trigger = Select/place Points\nA  = Move point further \nB = Move
-    point closer\nGrip = Switch  Path/Point mode\n"
+  m_text: "Right Stick = Turning\nRight Trigger = Select/place Points\nA  = Move
+    point further \nB = Move point closer\nGrip = Switch  Path/Point mode\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7932,7 +7932,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.07}
-  m_LocalScale: {x: 2160236, y: 2160236, z: 1}
+  m_LocalScale: {x: 2592283.2, y: 2592283.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1102896736}
