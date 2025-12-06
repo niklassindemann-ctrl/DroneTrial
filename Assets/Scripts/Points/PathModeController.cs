@@ -18,12 +18,10 @@ namespace Points
 		[SerializeField] private float _hapticAmplitude = 0.3f;
 		[SerializeField] private float _hapticDuration = 0.05f;
 
-		private InputDevice _rightHand;
-		private InputDevice _leftHand;
-		private bool _rightGripPrev;
-		private bool _bButtonPrev;
-		private bool _aButtonPrev;
-		private bool _triggerPrev;
+	private InputDevice _rightHand;
+	private InputDevice _leftHand;
+	private bool _rightGripPrev;
+	private bool _triggerPrev;
 		
 		// When set, indicates we want to continue the route starting from this point
 		private int? _resumeFromPointId;
@@ -115,15 +113,9 @@ namespace Points
 				HandleTriggerInput();
 			}
 
-			// Handle B button for undo
-			bool bButton = ReadButton(_rightHand, CommonUsages.secondaryButton);
-			if (EdgePressed(bButton, ref _bButtonPrev))
-			{
-				_pathManager.UndoLastPoint();
-				ProvideHapticFeedback(_hapticAmplitude * 0.5f, _hapticDuration);
-			}
-
-			// A button is used for depth control in normal mode - not used in path mode
+			// B button is handled by RayDepthController for depth adjustment (move ghost closer)
+			// A button is also handled by RayDepthController for depth adjustment (move ghost further)
+			// Removed undo functionality - B button should only adjust ghost depth in path mode
 
 			// DISABLED: Grip for finishing route (now used for path mode toggle)
 			// bool gripButton = ReadButton(_rightHand, CommonUsages.gripButton);
